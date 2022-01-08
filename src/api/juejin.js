@@ -27,9 +27,9 @@ module.exports = function () {
         },
       });
     },
-    dipLucky: function (params) {
+    dipLucky: function (params, uuid) {
       return request({
-        url: 'https://api.juejin.cn/growth_api/v1/lottery_lucky/dip_lucky?aid=2608&uuid=7049232282850313735',
+        url: `https://api.juejin.cn/growth_api/v1/lottery_lucky/dip_lucky?aid=2608&uuid=${uuid}`,
         method: 'post',
         params,
         headers: {
