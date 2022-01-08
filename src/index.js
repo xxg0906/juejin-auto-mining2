@@ -1,8 +1,8 @@
 /**
  * Created by huangqihong on 2022/01/07 23:35:00
  */
-const dotEnv = require('dotenv');
-dotEnv.config('./env');
+// const dotEnv = require('dotenv');
+// dotEnv.config('./env');
 
 const { COOKIE, UID, TOKEN } =  require('./utils/config.js');
 const message =  require('./utils/message');
@@ -109,9 +109,11 @@ if (!(UID && TOKEN)) {
       };
       await miningApi.over(overParams, UID, overTime);
       await sleep(3000);
-      await getInfo().then(() => {
+      await getInfo().then((res) => {
         if (todayDiamond < todayLimitDiamond) {
           playGame()
+        } else {
+          message(`今日限制矿石${res.userInfo.todayLimitDiamond},已获取矿石${res.userInfo.todayDiamond}`)
         }
       });
     }
