@@ -23,11 +23,12 @@ module.exports = function () {
      * 获取游戏info
      */
     getInfo: function (uid, time) {
+      console.log(uid, time);
       return request({
         url: `https://juejin-game.bytedance.com/game/sea-gold/home/info?uid=${uid}&time=${time}`,
         method: "get",
         headers: {
-          authorization: TOKEN,
+          'authorization': TOKEN,
         },
       });
     },

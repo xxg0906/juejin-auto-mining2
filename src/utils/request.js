@@ -33,7 +33,7 @@ module.exports = function service(options) {
         }
       })
       .catch((err) => {
-        // message(err.message)
+       console.log(err);
         reject(err)
       })
   })
