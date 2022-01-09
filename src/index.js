@@ -1,8 +1,8 @@
 /**
  * Created by huangqihong on 2022/01/07 23:35:00
  */
-const dotEnv = require('dotenv');
-dotEnv.config('./env');
+// const dotEnv = require('dotenv');
+// dotEnv.config('./env');
 
 const { COOKIE, UID, TOKEN, UUID } =  require('./utils/config.js');
 const message =  require('./utils/message');
@@ -11,27 +11,27 @@ const miningApi = require('./api/mining')();
 const jwt = require('jsonwebtoken');
 const firstData = require('./utils/first');
 
-// if(!COOKIE) {
-//   message('获取不到cookie，请检查设置')
-// } else {
-//   async function junJin() {
-//     try {
-//       // 先执行签到、抽奖以及沾喜气
-//       await jueJinApi.checkIn(); // 抽奖一次
-//       const drawResult = await jueJinApi.drawApi();
-//       const dipParams = { lottery_history_id: '7020267603864059917' };
-//       if (!UUID) {
-//         message(`抽奖成功，获得：${drawResult.lottery_name}, 获取不到uuid，不能沾幸运`);
-//       } else {
-//         const dipResult = await jueJinApi.dipLucky(dipParams, UUID);
-//         message(`抽奖成功，获得：${drawResult.lottery_name}; 获取幸运点${dipResult.dip_value}, 当前幸运点${dipResult.total_value}`);
-//       }
-//     } catch (e) {
-//       message(`有异常，请手动操作,${e.message}`);
-//     }
-//   }
-//   junJin().then(() => {});
-// }
+if(!COOKIE) {
+  message('获取不到cookie，请检查设置')
+} else {
+  async function junJin() {
+    try {
+      // 先执行签到、抽奖以及沾喜气
+      await jueJinApi.checkIn(); // 抽奖一次
+      const drawResult = await jueJinApi.drawApi();
+      const dipParams = { lottery_history_id: '7020267603864059917' };
+      if (!UUID) {
+        message(`抽奖成功，获得：${drawResult.lottery_name}, 获取不到uuid，不能沾幸运`);
+      } else {
+        const dipResult = await jueJinApi.dipLucky(dipParams, UUID);
+        message(`抽奖成功，获得：${drawResult.lottery_name}; 获取幸运点${dipResult.dip_value}, 当前幸运点${dipResult.total_value}`);
+      }
+    } catch (e) {
+      message(`有异常，请手动操作,${e.message}`);
+    }
+  }
+  junJin().then(() => {});
+}
 
 if (!(UID && TOKEN)) {
   message('获取不到游戏必须得UID和TOKEN，请检查设置')
