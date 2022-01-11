@@ -2,10 +2,19 @@
  * Created by huangqihong on 2022/1/8.
  */
 const request = require('../utils/request');
-const { TOKEN } =  require('../utils/config.js');
+const { TOKEN, COOKIE } =  require('../utils/config.js');
 
 module.exports = function () {
   return {
+    getUser: function () {
+      return request({
+        url: 'https://api.juejin.cn/user_api/v1/user/get',
+        method: 'get',
+        headers: {
+          cookie: COOKIE,
+        },
+      });
+    },
     /**
      * 开始
      */

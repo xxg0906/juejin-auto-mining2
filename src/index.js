@@ -4,7 +4,7 @@
 // const dotEnv = require('dotenv');
 // dotEnv.config('./env');
 
-const { COOKIE, UID, TOKEN, UUID } =  require('./utils/config.js');
+const { COOKIE, TOKEN, UUID } =  require('./utils/config.js');
 const message =  require('./utils/message');
 const jueJinApi = require('./api/juejin')();
 const miningApi = require('./api/mining')();
@@ -33,8 +33,10 @@ if(!COOKIE) {
   junJin().then(() => {});
 }
 
-if (!(UID && TOKEN)) {
-  message('获取不到游戏必须得UID和TOKEN，请检查设置')
+let juejinUid = '';
+
+if (!(COOKIE && TOKEN)) {
+  message('获取不到游戏必须得COOKIE和TOKEN，请检查设置')
 } else {
   let gameId = ''; // 发指令必须得gameId
   let deep = 0;
@@ -43,7 +45,10 @@ if (!(UID && TOKEN)) {
   async function getInfo() {
     const time = new Date().getTime();
     console.log(todayDiamond, todayLimitDiamond);
-    const resInfo = await miningApi.getInfo(UID, time);
+    const userInfo = await miningApi.getUser();
+    juejinUid = userInfo.user_id;
+
+    const resInfo = await miningApi.getInfo(juejinUid, time);
     deep = resInfo.gameInfo ? resInfo.gameInfo.deep : 0;
     gameId = resInfo.gameInfo ? resInfo.gameInfo.gameId : 0;
     todayDiamond = resInfo.userInfo.todayDiamond;
@@ -70,7 +75,7 @@ if (!(UID && TOKEN)) {
       const startParams = {
         roleId: 3,
       };
-      const startData = await miningApi.start(startParams, UID, startTime);
+      const startData = await miningApi.start(startParams, juejinUid, startTime);
       await sleep(3000);
       console.log('startData', startData);
       gameId = startData.gameId;
@@ -80,7 +85,7 @@ if (!(UID && TOKEN)) {
         command: firstData.command,
       };
       const xGameId = getXGameId(gameId);
-      const commandData = await miningApi.command(commandParams, UID, commandTime, xGameId);
+      const commandData = await miningApi.command(commandParams, juejinUid, commandTime, xGameId);
       deep = commandData.curPos.y;
       await sleep(3000);
       console.log('commandData', commandData);
@@ -89,7 +94,7 @@ if (!(UID && TOKEN)) {
       const overParams = {
         isButton: 1,
       };
-      const overData = await miningApi.over(overParams, UID, overTime);
+      const overData = await miningApi.over(overParams, juejinUid, overTime);
       await sleep(3000);
       console.log('overData', overData);
       deep = overData.deep;
@@ -97,7 +102,7 @@ if (!(UID && TOKEN)) {
       const mapTime = +new Date().getTime();
       if (deep < 500) {
         await sleep(3000);
-        await miningApi.freshMap({}, UID, mapTime);
+        await miningApi.freshMap({}, juejinUid, mapTime);
       }
       await sleep(3000);
       await getInfo().then((res) => {
@@ -115,7 +120,7 @@ if (!(UID && TOKEN)) {
       const overParams = {
         isButton: 1,
       };
-      await miningApi.over(overParams, UID, overTime);
+      await miningApi.over(overParams, juejinUid, overTime);
       await sleep(3000);
       await getInfo().then((res) => {
         if (todayDiamond < todayLimitDiamond) {
