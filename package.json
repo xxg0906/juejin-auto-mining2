@@ -12,7 +12,8 @@
   "main": "./src/index",
   "scripts": {
     "start": "node ./src/index",
-    "test:mining": "node ./test/test-mining"
+    "test:mining": "node ./test/test-mining",
+    "test:juejin": "node ./test/test-juejin"
   },
   "keywords": [
     "掘金",

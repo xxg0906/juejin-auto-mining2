@@ -7,4 +7,4 @@ miningApi.getUser().then((data) => {
     console.log('daya', data.user_id);
 }).catch((e) => {
     console.log('e', e);
-})
+});

@@ -4,7 +4,7 @@
 // const dotEnv = require('dotenv');
 // dotEnv.config('./env');
 
-const { COOKIE, TOKEN, UUID } =  require('./utils/config.js');
+const { COOKIE, TOKEN } =  require('./utils/config.js');
 const message =  require('./utils/message');
 const jueJinApi = require('./api/juejin')();
 const miningApi = require('./api/mining')();
@@ -19,13 +19,9 @@ if(!COOKIE) {
       // 先执行签到、抽奖以及沾喜气
       await jueJinApi.checkIn(); // 抽奖一次
       const drawResult = await jueJinApi.drawApi();
-      const dipParams = { lottery_history_id: '7020267603864059917' };
-      if (!UUID) {
-        message(`抽奖成功，获得：${drawResult.lottery_name}, 获取不到uuid，不能沾幸运`);
-      } else {
-        const dipResult = await jueJinApi.dipLucky(dipParams, UUID);
-        message(`抽奖成功，获得：${drawResult.lottery_name}; 获取幸运点${dipResult.dip_value}, 当前幸运点${dipResult.total_value}`);
-      }
+      const dipParams = { lottery_history_id: '7052109119238438925' };
+      const dipResult = await jueJinApi.dipLucky(dipParams, UUID);
+      message(`抽奖成功，获得：${drawResult.lottery_name}; 获取幸运点${dipResult.dip_value}, 当前幸运点${dipResult.total_value}`);
     } catch (e) {
       message(`有异常，请手动操作,${e.message}`);
     }
